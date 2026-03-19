@@ -4,8 +4,14 @@ import {connectDB} from "./lib/db.js"
 import cookieParser from "cookie-parser";
 import messageRoutes from "./routes/messageRoutes.js"
 import dotenv from "dotenv";
-dotenv.config()
-const app=express();
+import cors from "cors";
+dotenv.config();
+
+import { app, server } from "./lib/socket.js";
+app.use(cors({
+  origin: ["http://localhost:5173", "http://localhost:5174"],
+  credentials: true
+}));
 app.use(express.json());
 app.use(cookieParser());
 const PORT=process.env.PORT;
@@ -17,7 +23,7 @@ app.get("/", (req, res) => {
 const startserver=async()=>{
     try{
         await connectDB();
-        app.listen(PORT,()=>{
+        server.listen(PORT,()=>{
             console.log(`server is running on port ${PORT}`);
             console.log(`the address of the port is http://localhost:${PORT}`);
         })
