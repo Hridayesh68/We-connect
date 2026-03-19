@@ -20,7 +20,7 @@ console.log({authUser});
       <Navbar/>
 
       <Routes>
-        <Route path="/" element={<HomePage/>}/>
+        <Route path="/HomePage" element={<HomePage/>}/>
         <Route path="/signup" element={<SignUpPage/>}/>
         <Route path="/login" element={<LoginPage/>}/>
         <Route path="/settings" element={<SettingsPage/>}/>
