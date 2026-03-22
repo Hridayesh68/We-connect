@@ -1,7 +1,10 @@
 let socket = null;
 
 export const connectSocket = (token) => {
-  socket = new WebSocket(`ws://localhost:8080/ws?token=${token}`);
+  const wsUrl = import.meta.env.MODE === "development" 
+    ? `ws://localhost:8080/ws?token=${token}` 
+    : `wss://we-connect-lycm.onrender.com/ws?token=${token}`;
+  socket = new WebSocket(wsUrl);
   return socket;
 };
 

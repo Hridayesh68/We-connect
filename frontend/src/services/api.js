@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:8080/api";
+const API_BASE = import.meta.env.MODE === "development" ? "http://localhost:8080/api" : "https://we-connect-lycm.onrender.com/api";
 
 export const loginUser = async (data) => {
   const res = await fetch(`${API_BASE}/login`, {
