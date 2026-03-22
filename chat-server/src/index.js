@@ -9,7 +9,10 @@ dotenv.config()
 const app=express();
 
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: [
+    "http://localhost:5173",
+    "https://we-connect-git-main-hridayesh-debsarmas-projects.vercel.app"
+  ],
   credentials: true
 }));
 

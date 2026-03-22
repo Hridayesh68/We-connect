@@ -7,7 +7,10 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:5173"], // Default Vite port, update if needed
+    origin: [
+      "http://localhost:5173", 
+      "https://we-connect-git-main-hridayesh-debsarmas-projects.vercel.app"
+    ],
   },
 });
 
