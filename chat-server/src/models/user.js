@@ -13,14 +13,20 @@ const userSchema = new mongoose.Schema(
         },
         password:{
             type:String,
-            required: true,
-            minlength: 6,
+            required: false,
         },
         profilePic:{
             type:String,
             default: "",
         },
-
+        isVerified: {
+            type: Boolean,
+            default: false,
+        },
+        verificationOTP: String,
+        verificationOTPExpires: Date,
+        resetPasswordToken: String,
+        resetPasswordExpires: Date,
     },
     {timestamps: true}
 );

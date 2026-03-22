@@ -3,6 +3,8 @@ import { useAuthStore } from "../store/useAuthStore";
 import AuthImagePattern from "../components/AuthImagePattern";
 import { Link } from "react-router-dom";
 import { Eye, EyeOff, Loader2, Lock, Mail, MessageSquare } from "lucide-react";
+import { GoogleLogin } from "@react-oauth/google";
+import toast from "react-hot-toast";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -85,6 +87,12 @@ const LoginPage = () => {
               </div>
             </div>
 
+            <div className="flex justify-end mt-1">
+              <Link to="/forgot-password" className="text-sm link link-primary hover:underline">
+                Forgot Password?
+              </Link>
+            </div>
+            
             <button type="submit" className="btn btn-primary w-full" disabled={isLoggingIn}>
               {isLoggingIn ? (
                 <>
@@ -96,6 +104,19 @@ const LoginPage = () => {
               )}
             </button>
           </form>
+
+          <div className="divider text-base-content/60 text-sm py-4">OR</div>
+
+          <div className="flex justify-center w-full">
+            <GoogleLogin
+              onSuccess={(credentialResponse) => {
+                useAuthStore.getState().googleLogin(credentialResponse.credential);
+              }}
+              onError={() => {
+                toast.error("Google login failed");
+              }}
+            />
+          </div>
 
           <div className="text-center">
             <p className="text-base-content/60">

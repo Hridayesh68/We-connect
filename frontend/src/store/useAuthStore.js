@@ -11,6 +11,9 @@ export const useAuthStore = create((set, get) => ({
   isLoggingIn: false,
   isUpdatingProfile: false,
   isCheckingAuth: true,
+  isSendingOtp: false,
+  isSendingResetLink: false,
+  isResettingPassword: false,
   onlineUsers: [],
   socket: null,
 
@@ -65,6 +68,60 @@ export const useAuthStore = create((set, get) => ({
       get().disconnectSocket();
     } catch (error) {
       toast.error(error.response?.data?.message || error.message || "Logout failed");
+    }
+  },
+
+  sendSignupOtp: async (data) => {
+    set({ isSendingOtp: true });
+    try {
+      const res = await axiosInstance.post("/auth/send-otp", data);
+      toast.success(res.data.message);
+      return true;
+    } catch (error) {
+      toast.error(error.response?.data?.message || error.message);
+      return false;
+    } finally {
+      set({ isSendingOtp: false });
+    }
+  },
+
+  forgotPassword: async (data) => {
+    set({ isSendingResetLink: true });
+    try {
+      const res = await axiosInstance.post("/auth/forgot-password", data);
+      toast.success(res.data.message);
+    } catch (error) {
+      toast.error(error.response?.data?.message || error.message);
+    } finally {
+      set({ isSendingResetLink: false });
+    }
+  },
+
+  resetPassword: async (token, data) => {
+    set({ isResettingPassword: true });
+    try {
+      const res = await axiosInstance.post(`/auth/reset-password/${token}`, data);
+      toast.success(res.data.message);
+      return true;
+    } catch (error) {
+      toast.error(error.response?.data?.message || error.message);
+      return false;
+    } finally {
+      set({ isResettingPassword: false });
+    }
+  },
+
+  googleLogin: async (credential) => {
+    set({ isLoggingIn: true });
+    try {
+      const res = await axiosInstance.post("/auth/google", { credential });
+      set({ authUser: res.data });
+      toast.success("Logged in with Google successfully");
+      get().connectSocket();
+    } catch (error) {
+      toast.error(error.response?.data?.message || error.message);
+    } finally {
+      set({ isLoggingIn: false });
     }
   },
 
