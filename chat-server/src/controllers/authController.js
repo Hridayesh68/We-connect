@@ -7,7 +7,7 @@ import crypto from "crypto";
 import { OAuth2Client } from "google-auth-library";
 import { sendVerificationEmail, sendPasswordResetEmail } from "../lib/email.js";
 
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+const client = new OAuth2Client(process.env.CLIENT_ID);
 
 // ================= SEND OTP =================
 export const sendOtp = async (req, res) => {
@@ -245,7 +245,7 @@ export const googleAuth = async (req, res) => {
     const { credential } = req.body;
     const ticket = await client.verifyIdToken({
       idToken: credential,
-      audience: process.env.GOOGLE_CLIENT_ID,
+      audience: process.env.CLIENT_ID,
     });
 
     const payload = ticket.getPayload();
