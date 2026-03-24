@@ -147,7 +147,16 @@ export const useAuthStore = create((set, get) => ({
       query: {
         userId: authUser._id,
       },
+      transports: ["websocket"]
     });
+    
+    socket.on("connect", () => {
+      console.log("Socket connected successfully:", socket.id);
+    });
+    socket.on("connect_error", (err) => {
+      console.error("Socket connection error:", err.message);
+    });
+
     socket.connect();
 
     set({ socket: socket });

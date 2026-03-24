@@ -1,6 +1,7 @@
 import User from "../models/user.js";
 import Message from "../models/message.js";
 import cloudinary from "../lib/cloudinary.js";
+import { getReceiverSocketId, io } from "../lib/socket.js";
 
 export const getUsersForSidebar=async(req,res)=>{
 try{
@@ -52,6 +53,15 @@ const newMessage=new Message({
     image: imageUrl,
 });
 await newMessage.save();
+
+const receiverSocketId = getReceiverSocketId(receiverId);
+if (receiverSocketId) {
+  console.log(`Emitting newMessage to receiver ${receiverId} on socket ${receiverSocketId}`);
+  io.to(receiverSocketId).emit("newMessage", newMessage.toObject());
+} else {
+  console.log(`Receiver ${receiverId} is offline, no socket found.`);
+}
+
 res.status(201).json(newMessage);
 }
 catch(error)

@@ -20,12 +20,15 @@ const ChatContainer = () => {
   const messageEndRef = useRef(null);
 
   useEffect(() => {
-    getMessages(selectedUser._id);
+    const fetchMessages = async () => {
+      await getMessages(selectedUser._id);
+      subscribeToMessages();
+    };
 
-    subscribeToMessages();
+    if (selectedUser?._id) fetchMessages();
 
     return () => unsubscribeFromMessages();
-  }, [selectedUser._id, getMessages, subscribeToMessages, unsubscribeFromMessages]);
+  }, [selectedUser?._id, getMessages, subscribeToMessages, unsubscribeFromMessages]);
 
   useEffect(() => {
     if (messageEndRef.current && messages) {
@@ -71,7 +74,11 @@ const ChatContainer = () => {
                 {formatMessageTime(message.createdAt)}
               </time>
             </div>
-            <div className="chat-bubble flex flex-col">
+            <div
+              className={`chat-bubble flex flex-col ${
+                message.senderId === authUser._id ? "chat-bubble-primary" : ""
+              }`}
+            >
               {message.image && (
                 <img
                   src={message.image}
