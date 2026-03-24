@@ -14,6 +14,7 @@ app.use(cors({
     "http://localhost:5174",
     "http://127.0.0.1:5173",
     "http://127.0.0.1:5174",
+    "https://we-connect-three.vercel.app",
     "https://we-connect-git-main-hridayesh-debsarmas-projects.vercel.app"
   ],
   credentials: true
